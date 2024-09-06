@@ -3,6 +3,10 @@ import easyocr
 import numpy as np
 import matplotlib.pyplot as plt
 
+licensePlates = {
+    1: "HI9876",
+}
+
 def showImage(data, convert=False, gray=True):
     plt.figure(figsize=(10, 6))
     if convert:
@@ -61,6 +65,10 @@ def process_frame(frame, reader):
     res = cv.putText(frame, text=text, org=(approx[0][0][0], approx[1][0][1]+60), fontFace=cv.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(0,255,0), thickness=2, lineType=cv.LINE_AA)
     res = cv.rectangle(frame, tuple(approx[0][0]), tuple(approx[2][0]), (0,255,0),3)
     res = frame
+
+    if text in licensePlates.values():
+        print("Registered License Plate Found :", text)
+        # GPIO.output(led, GPIO.HIGH)
 
     return frame, res
 
